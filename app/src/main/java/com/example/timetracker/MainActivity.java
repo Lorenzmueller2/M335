@@ -3,6 +3,7 @@ package com.example.timetracker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -20,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private int completedWorkDays;
     //private EditText hoursPerDay;
 
-
+    private static final String PREFS_FILE = "WorkTimerPrefs";
+    private static final String COMPLETED_WORK_DAYS_KEY = "completedWorkDays";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        SharedPreferences prefs = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+        completedWorkDays = prefs.getInt(COMPLETED_WORK_DAYS_KEY, 0);
 
         if (savedInstanceState != null) {
             sec = savedInstanceState.getInt("seconds");
@@ -108,10 +111,21 @@ public class MainActivity extends AppCompatActivity {
                 if (is_running) {
                     sec++;
 
+                    if (sec % (8 * 3600) == 0) {
+                        completedWorkDays++;
+                        saveCompletedWorkDays();
+                    }
                 }
 
                 handle.postDelayed(this, 1000);
             }
         });
     }
+
+    private void saveCompletedWorkDays() {
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_FILE, MODE_PRIVATE).edit();
+        editor.putInt(COMPLETED_WORK_DAYS_KEY, completedWorkDays);
+        editor.apply();
+    }
+
 }
