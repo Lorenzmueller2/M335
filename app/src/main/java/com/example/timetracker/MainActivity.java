@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Button weekOverviewBtn = findViewById(R.id.weekoverview);
         ToggleButton workButton = (ToggleButton) findViewById(R.id.workButton);
 
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         weekOverviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             is_running = savedInstanceState.getBoolean("running");
             was_running = savedInstanceState.getBoolean("wasRunning");
         }
-
         runningTimer();
     }
 
@@ -69,13 +66,6 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putBoolean("wasRunning", was_running);
 
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        was_running = is_running;
-        is_running = false;
     }
 
     @Override
@@ -116,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                         saveCompletedWorkDays();
                     }
                 }
-
                 handle.postDelayed(this, 1000);
             }
         });
