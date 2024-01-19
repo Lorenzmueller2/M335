@@ -2,6 +2,7 @@ package com.example.timetracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void runningTimer() {
         TextView output = (TextView) findViewById(R.id.output);
+        NewAppWidget newAppWidget = new NewAppWidget();
         //hoursPerDay = findViewById(R.id.hoursPerDay);
         //int hoursPerDayLimit = Integer.parseInt(hoursPerDay.getText().toString());
         final Handler handle = new Handler();
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         completedWorkDays++;
                         saveCompletedWorkDays();
                     }
+                    newAppWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()), R.id.widget_text, formattedTime);
                 }
                 handle.postDelayed(this, 1000);
             }
