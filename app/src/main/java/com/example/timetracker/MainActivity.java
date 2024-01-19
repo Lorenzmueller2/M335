@@ -29,10 +29,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        addOnClickListeners();
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+        completedWorkDays = prefs.getInt(COMPLETED_WORK_DAYS_KEY, 0);
+        if (savedInstanceState != null) {
+            sec = savedInstanceState.getInt("seconds");
+            is_running = savedInstanceState.getBoolean("running");
+            was_running = savedInstanceState.getBoolean("wasRunning");
+        }
+        runningTimer();
+    }
+
+    private void addOnClickListeners() {
         Button weekOverviewBtn = findViewById(R.id.weekoverview);
         ToggleButton workButton = (ToggleButton) findViewById(R.id.workButton);
         Button resetButton = findViewById(R.id.resetButton);
-
         workButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -56,16 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        SharedPreferences prefs = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
-        completedWorkDays = prefs.getInt(COMPLETED_WORK_DAYS_KEY, 0);
-
-        if (savedInstanceState != null) {
-            sec = savedInstanceState.getInt("seconds");
-            is_running = savedInstanceState.getBoolean("running");
-            was_running = savedInstanceState.getBoolean("wasRunning");
-        }
-        runningTimer();
     }
 
     @Override
