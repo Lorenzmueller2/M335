@@ -28,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Button weekOverviewBtn = findViewById(R.id.weekoverview);
         ToggleButton workButton = (ToggleButton) findViewById(R.id.workButton);
+        Button resetButton = findViewById(R.id.resetButton);
 
         workButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -39,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     onClickStop();
                 }
+            }
+        });
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickReset();
             }
         });
         weekOverviewBtn.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +93,13 @@ public class MainActivity extends AppCompatActivity {
         is_running = false;
     }
 
+    public void onClickReset() {
+        is_running = false;
+        sec = 0;
+    }
+
     private void runningTimer() {
         TextView output = (TextView) findViewById(R.id.output);
-        NewAppWidget newAppWidget = new NewAppWidget();
         //hoursPerDay = findViewById(R.id.hoursPerDay);
         //int hoursPerDayLimit = Integer.parseInt(hoursPerDay.getText().toString());
         final Handler handle = new Handler();
@@ -107,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         completedWorkDays++;
                         saveCompletedWorkDays();
                     }
-                    newAppWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()), R.id.widget_text, formattedTime);
+                    NewAppWidget.updateAppWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()), R.id.widget_text, formattedTime);
                 }
                 handle.postDelayed(this, 1000);
             }
